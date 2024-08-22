@@ -4,9 +4,161 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Concrete Calculator</title>
-    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #FFFFFF;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .calculator-container {
+            background-color: #BA704F;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+        h1 {
+            color: #FFFFFF;
+            margin-bottom: 20px;
+        }
+        select, input[type="number"], button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        select, input[type="number"] {
+            background-color: #FFFFFF;
+            color: #333;
+        }
+        button {
+            background-color: #FFFFFF;
+            color: #BA704F;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #F0F0F0;
+        }
+        .result {
+            font-size: 18px;
+            color: #FFFFFF;
+            margin-top: 20px;
+        }
+        @media (max-width: 600px) {
+            .calculator-container {
+                padding: 10px;
+            }
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
 </head>
 <body>
-    What's up Thomas?
+    <div class="calculator-container">
+        <h1>Concrete Calculator</h1>
+        <form id="calculator-form">
+            <label for="service">Select a service:</label>
+            <select id="service" name="service">
+                <option value="installation">Concrete installation & finishing</option>
+                <option value="demolition">Concrete demolition</option>
+                <option value="coloring">Concrete coloring</option>
+            </select>
+
+            <div id="options-container"></div>
+            <button type="button" onclick="calculate()">Get Quote</button>
+            <div class="result" id="result"></div>
+        </form>
+    </div>
+
+    <script>
+        const optionsContainer = document.getElementById('options-container');
+        const resultDiv = document.getElementById('result');
+        const serviceSelect = document.getElementById('service');
+
+        function updateOptions() {
+            const selectedService = serviceSelect.value;
+            let html = '';
+
+            if (selectedService === 'installation') {
+                html = `
+                    <label for="finish">Select finish type:</label>
+                    <select id="finish">
+                        <option value="brush" data-cost="12">Brush finish - $12 per sq ft</option>
+                        <option value="aggregate" data-cost="14">Aggregate finish - $14 per sq ft</option>
+                        <option value="smooth" data-cost="16">Smooth finish - $16 per sq ft</option>
+                        <option value="sand" data-cost="17">Sand finish - $17 per sq ft</option>
+                        <option value="stamped" data-cost="18">Stamped finish - $18 per sq ft</option>
+                    </select>
+                    <label for="square-footage">Enter square footage:</label>
+                    <input type="number" id="square-footage" min="0" step="any">
+                `;
+            } else if (selectedService === 'demolition') {
+                html = `
+                    <label for="demolition-footage">Enter square footage:</label>
+                    <input type="number" id="demolition-footage" min="0" step="any">
+                `;
+            } else if (selectedService === 'coloring') {
+                html = `
+                    <label for="yards">Enter yards of concrete coloring:</label>
+                    <input type="number" id="yards" min="0" step="any">
+                `;
+            }
+
+            optionsContainer.innerHTML = html;
+        }
+
+        function calculate() {
+            const service = serviceSelect.value;
+            let result = 0;
+
+            if (service === 'installation') {
+                const finish = document.getElementById('finish');
+                const squareFootage = parseFloat(document.getElementById('square-footage').value);
+                const costPerSqFt = parseFloat(finish.options[finish.selectedIndex].getAttribute('data-cost'));
+
+                if (squareFootage < 150) {
+                    result = 1500;
+                } else {
+                    result = squareFootage * costPerSqFt;
+                }
+            } else if (service === 'demolition') {
+                const squareFootage = parseFloat(document.getElementById('demolition-footage').value);
+                if (squareFootage >= 300 && squareFootage <= 500) {
+                    result = squareFootage * 2;
+                } else if (squareFootage >= 600 && squareFootage <= 1000) {
+                    result = squareFootage * 4;
+                } else if (squareFootage >= 1000 && squareFootage <= 2000) {
+                    result = squareFootage * 5;
+                } else if (squareFootage >= 2000) {
+                    result = squareFootage * 8;
+                } else {
+                    result = 0;
+                }
+            } else if (service === 'coloring') {
+                const yards = parseFloat(document.getElementById('yards').value);
+                result = yards * 150;
+            }
+
+            resultDiv.textContent = `Estimated cost: $${result.toFixed(2)}`;
+        }
+
+        // Initialize options on page load based on default selected option
+        document.addEventListener('DOMContentLoaded', function () {
+            updateOptions();
+        });
+
+        // Update options when the selected service changes
+        serviceSelect.addEventListener('change', updateOptions);
+    </script>
 </body>
 </html>
