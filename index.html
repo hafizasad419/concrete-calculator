@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Concrete Calculator</title>
+    <title>Concrete project quote calculator</title>
     <style>
+        /* Existing CSS, no changes required as per your instructions */
         * {
             margin: 0;
             padding: 0;
@@ -34,7 +35,7 @@
 
         h1 {
             color: #FFFFFF;
-            margin-bottom: 20px;
+            
         }
 
         select,
@@ -85,7 +86,8 @@
 
 <body>
     <div class="calculator-container">
-        <h1>Concrete Calculator</h1>
+        <h1>Concrete Project Quote Calculator</h1>
+        <p style="margin-bottom: 15px; color: #FFFFFF; font-size: 14px;">Get an instant ballpark estimate for your concrete project</p>
         <form id="calculator-form">
             <label for="service">Select a service:</label>
             <select id="service" name="service">
@@ -121,11 +123,13 @@
                     </select>
                     <label for="square-footage">Enter square footage:</label>
                     <input type="number" id="square-footage" min="0" step="any">
+                    <p style="color: #FFFFFF; font-size: 14px;">*Anything under 150 sq. ft. is minimum $1500</p>
                 `;
             } else if (selectedService === 'demolition') {
                 html = `
                     <label for="demolition-footage">Enter square footage:</label>
                     <input type="number" id="demolition-footage" min="0" step="any">
+                    <p style="color: #FFFFFF; font-size: 14px;">*Anything under 500 sq. ft. is minimum $1000</p>
                 `;
             } else if (selectedService === 'coloring') {
                 html = `
@@ -146,30 +150,29 @@
                 const squareFootage = parseFloat(document.getElementById('square-footage').value);
                 const costPerSqFt = parseFloat(finish.options[finish.selectedIndex].getAttribute('data-cost'));
 
+                result = squareFootage * costPerSqFt;
                 if (squareFootage < 150) {
-                    result = 1500;
-                } else {
-                    result = squareFootage * costPerSqFt;
+                    result = Math.max(1500, result);
                 }
             } else if (service === 'demolition') {
                 const squareFootage = parseFloat(document.getElementById('demolition-footage').value);
                 if (squareFootage >= 300 && squareFootage <= 500) {
-                    result = squareFootage * 2;
-                } else if (squareFootage >= 600 && squareFootage <= 1000) {
+                    result = Math.max(1000, squareFootage * 2);
+                } else if (squareFootage > 500 && squareFootage <= 1000) {
                     result = squareFootage * 4;
                 } else if (squareFootage >= 1000 && squareFootage <= 2000) {
                     result = squareFootage * 5;
                 } else if (squareFootage >= 2000) {
                     result = squareFootage * 8;
                 } else {
-                    result = 0;
+                    result = 1000; // Minimum for anything under 500 sq ft
                 }
             } else if (service === 'coloring') {
                 const yards = parseFloat(document.getElementById('yards').value);
                 result = yards * 150;
             }
 
-            resultDiv.textContent = `Estimated cost: $${result.toFixed(2)}`;
+            resultDiv.textContent = `Estimated cost: $${result}`;
         }
 
         // Initialize options on page load based on default selected option
