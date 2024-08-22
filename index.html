@@ -1,10 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Concrete Calculator</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: Arial, sans-serif;
             background-color: #FFFFFF;
@@ -15,6 +22,7 @@
             min-height: 100vh;
             margin: 0;
         }
+
         .calculator-container {
             background-color: #BA704F;
             padding: 20px;
@@ -23,11 +31,15 @@
             width: 100%;
             max-width: 600px;
         }
+
         h1 {
             color: #FFFFFF;
             margin-bottom: 20px;
         }
-        select, input[type="number"], button {
+
+        select,
+        input[type="number"],
+        button {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
@@ -35,34 +47,42 @@
             border-radius: 5px;
             font-size: 16px;
         }
-        select, input[type="number"] {
+
+        select,
+        input[type="number"] {
             background-color: #FFFFFF;
             color: #333;
         }
+
         button {
             background-color: #FFFFFF;
             color: #BA704F;
             cursor: pointer;
             font-weight: bold;
         }
+
         button:hover {
             background-color: #F0F0F0;
         }
+
         .result {
             font-size: 18px;
             color: #FFFFFF;
             margin-top: 20px;
         }
+
         @media (max-width: 600px) {
             .calculator-container {
                 padding: 10px;
             }
+
             h1 {
                 font-size: 24px;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="calculator-container">
         <h1>Concrete Calculator</h1>
@@ -161,4 +181,5 @@
         serviceSelect.addEventListener('change', updateOptions);
     </script>
 </body>
+
 </html>
