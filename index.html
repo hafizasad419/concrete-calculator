@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Concrete project quote calculator</title>
     <style>
-        /* Existing CSS, no changes required as per your instructions */
+        /* Existing CSS, updated to target elements by their id */
         * {
             margin: 0;
             padding: 0;
@@ -24,7 +24,7 @@
             margin: 0;
         }
 
-        .calculator-container {
+        #calculator-container {
             background-color: #BA704F;
             padding: 20px;
             border-radius: 10px;
@@ -33,14 +33,13 @@
             max-width: 600px;
         }
 
-        h1 {
+        #calculator-container h1 {
             color: #FFFFFF;
-            
         }
 
-        select,
-        input[type="number"],
-        button {
+        #calculator-form select,
+        #calculator-form input[type="number"],
+        #calculator-form button {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
@@ -49,45 +48,52 @@
             font-size: 16px;
         }
 
-        select,
-        input[type="number"] {
+        #calculator-form select,
+        #calculator-form input[type="number"] {
             background-color: #FFFFFF;
             color: #333;
         }
 
-        button {
+        #calculator-form button {
             background-color: #FFFFFF;
             color: #BA704F;
             cursor: pointer;
             font-weight: bold;
         }
 
-        button:hover {
+        #calculator-form button:hover {
             background-color: #F0F0F0;
         }
 
-        .result {
+        #result {
             font-size: 18px;
             color: #FFFFFF;
             margin-top: 20px;
         }
 
         @media (max-width: 600px) {
-            .calculator-container {
+            #calculator-container {
                 padding: 10px;
             }
 
-            h1 {
+            #calculator-container h1 {
                 font-size: 24px;
             }
+        }
+
+        /* Additional styling for text messages */
+        #install-text, #demolition-text {
+            color: #FFFFFF;
+            font-size: 14px;
+            margin: 10px 0;
         }
     </style>
 </head>
 
 <body>
-    <div class="calculator-container">
+    <div id="calculator-container">
         <h1>Concrete Project Quote Calculator</h1>
-        <p style="margin-bottom: 15px; color: #FFFFFF; font-size: 14px;">Get an instant ballpark estimate for your concrete project</p>
+        <p id="description" style="margin-bottom: 15px; color: #FFFFFF; font-size: 14px;">Get an instant ballpark estimate for your concrete project</p>
         <form id="calculator-form">
             <label for="service">Select a service:</label>
             <select id="service" name="service">
@@ -97,8 +103,8 @@
             </select>
 
             <div id="options-container"></div>
-            <button type="button" onclick="calculate()">Get Quote</button>
-            <div class="result" id="result"></div>
+            <button type="button" id="calculate-button" onclick="calculate()">Get Quote</button>
+            <div id="result"></div>
         </form>
     </div>
 
@@ -123,13 +129,13 @@
                     </select>
                     <label for="square-footage">Enter square footage:</label>
                     <input type="number" id="square-footage" min="0" step="any">
-                    <p style="color: #FFFFFF; font-size: 14px;">*Anything under 150 sq. ft. is minimum $1500</p>
+                    <p id="install-text">*Anything under 150 sq. ft. is minimum $1500</p>
                 `;
             } else if (selectedService === 'demolition') {
                 html = `
                     <label for="demolition-footage">Enter square footage:</label>
                     <input type="number" id="demolition-footage" min="0" step="any">
-                    <p style="color: #FFFFFF; font-size: 14px;">*Anything under 500 sq. ft. is minimum $1000</p>
+                    <p id="demolition-text">*Anything under 500 sq. ft. is minimum $1000</p>
                 `;
             } else if (selectedService === 'coloring') {
                 html = `
@@ -172,7 +178,7 @@
                 result = yards * 150;
             }
 
-            resultDiv.textContent = `Estimated cost: $${result}`;
+            resultDiv.textContent = `Estimated cost: $${Math.round(result)}`;
         }
 
         // Initialize options on page load based on default selected option
